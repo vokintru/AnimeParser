@@ -1,9 +1,21 @@
-import { Text, View } from "react-native";
+import {Image, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {SafeAreaView} from "react-native-safe-area-context";
+import React, {useEffect, useState} from "react";
+import SearchBar from "@/components/SearchBar";
+import LogoAnimated from "@/components/LogoAnimated";
+import { useRouter} from "expo-router";
 
 export default function Index() {
-  return (
-    <View className="flex-1 items-center justify-center">
-        <Text className="text-5xl font-bold text-blue-500">Welcome</Text>
-    </View>
-  );
+    const router = useRouter();
+    return (
+        <SafeAreaView className="flex-1 bg-background">
+            <LogoAnimated />
+            <View className="flex-1 mt-5">
+                <SearchBar
+                    onPress={() => router.push("/search")}
+                    placeholder="Поиск"
+                />
+            </View>
+        </SafeAreaView>
+    );
 }
