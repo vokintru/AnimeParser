@@ -9,7 +9,7 @@ export default function Index() {
     const router = useRouter();
     return (
         <SafeAreaView className="flex-1 bg-background">
-            <LogoAnimated />
+            <LogoAnimated className="w-full max-w-[280px]" />
             <View className="flex-1 mt-5">
                 <SearchBar
                     onPress={() => router.push("/search")}

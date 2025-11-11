@@ -5,7 +5,11 @@ import Search from "@/app/(tabs)/search";
 
 const framesArray = Object.values(logo_frames);
 
-const LogoAnimated = () => {
+interface Props {
+    className: string;
+}
+
+const LogoAnimated = ( {className}: Props) => {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
@@ -20,7 +24,7 @@ const LogoAnimated = () => {
         <View className="w-full items-center">
             <Image
                 source={framesArray[index]}
-                className="w-full max-w-[280px]"
+                className={className}
                 style={{ aspectRatio: 491 / 428, resizeMode: 'contain' }}
             />
         </View>
