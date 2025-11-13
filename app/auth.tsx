@@ -11,10 +11,8 @@ export default function AuthScreen({ onAuthSuccess }: { onAuthSuccess: () => voi
         setLoading(true);
 
         try {
-            const sessionId = Math.random().toString(36).substring(2, 10);
-
             const redirectUri = Linking.createURL('token');
-            const authUrl = `https://anime.v0k1nt.su/app/login?app_session=${sessionId}`;
+            const authUrl = `https://anime.v0k1nt.su/app/login`;
 
             const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri);
             if (result.type === 'success' && result.url) {

@@ -1,18 +1,21 @@
-interface Movie {
-  id: number;
-  title: string;
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
+interface searchAnime {
+    id: number;
+    name: string;
+    russian: string;
+    image: {
+        original: string;
+        preview: string;
+        x96: string;
+        x48: string;
+    }
+    url: string;
+    kind: string;
+    score: string;
+    status: string;
+    episodes: number;
+    episodes_aired: number;
+    aired_on: string | null;
+    released_on: string | null;
 }
 
 interface TrendingMovie {

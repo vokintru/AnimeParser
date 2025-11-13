@@ -21,13 +21,11 @@ const LogoAnimated = ( {className}: Props) => {
     }, [100]);
 
     return (
-        <View className="w-full items-center">
-            <Image
-                source={framesArray[index]}
-                className={className}
-                style={{ aspectRatio: 491 / 428, resizeMode: 'contain' }}
-            />
-        </View>
+        <Image
+            source={framesArray[index]}
+            className={className}
+            style={{ aspectRatio: 491 / 428, resizeMode: 'contain' }}
+        />
     );
 };
 
