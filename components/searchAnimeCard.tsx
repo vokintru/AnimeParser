@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {Link} from "expo-router";
 import { images } from "@/constants/images"
 
-const AnimeCard = ({ id, name, russian, image, url, kind, score, status, episodes, episodes_aired, aired_on, released_on}: searchAnime) => {
+const SearchAnimeCard = ({ id, russian, image, kind, status, aired_on, released_on}: searchAnime) => {
     return (
         <Link href={`/release/${id}`} asChild>
             <TouchableOpacity className="bg-input-bg border-input-border p-3 rounded-lg mb-3 border flex-row max-w-full min-w-full">
@@ -13,7 +13,7 @@ const AnimeCard = ({ id, name, russian, image, url, kind, score, status, episode
                             ? { uri: `https://shikimori.one${image.original}` }
                             : images.no_poster
                     }
-                    className="w-28 h-40 rounded-md"
+                    className="w-28 h-40 rounded-md aspect-[2/3]"
                     resizeMode="cover"
                 />
                 <View className="ml-3 justify-items-start flex-1">
@@ -35,4 +35,4 @@ const AnimeCard = ({ id, name, russian, image, url, kind, score, status, episode
     );
 };
 
-export default AnimeCard;
+export default SearchAnimeCard;

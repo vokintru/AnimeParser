@@ -4,7 +4,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import useFetch from "@/services/useFetch";
 import {searchAnime} from "@/services/api";
 import SearchBar from "@/components/SearchBar";
-import AnimeCard from "@/components/animeCard";
+import SearchAnimeCard from "@/components/searchAnimeCard";
 
 const Search = () => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -53,7 +53,7 @@ const Search = () => {
                     <FlatList
                         data={searchData}
                         keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => <AnimeCard {...item} />}
+                        renderItem={({ item }) => <SearchAnimeCard {...item} />}
                         contentContainerStyle={{
                             paddingHorizontal: 10,
                             paddingVertical: 8,
