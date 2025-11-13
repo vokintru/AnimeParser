@@ -1,4 +1,4 @@
-import {ActivityIndicator, Animated, FlatList, Text, View} from "react-native";
+import {ActivityIndicator, FlatList, Text} from "react-native";
 import React from "react";
 import useFetch from "@/services/useFetch";
 import {getWatchlist,} from "@/services/api";

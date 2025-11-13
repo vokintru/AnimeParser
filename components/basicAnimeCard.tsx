@@ -1,9 +1,9 @@
 import {Link} from "expo-router";
-import {Image, Text, TouchableOpacity, View} from "react-native";
+import {Image, Text, TouchableOpacity} from "react-native";
 import {images} from "@/constants/images";
 import React from "react";
 
-const BasicAnimeCard = ({ id, name, original_name, title_id, episodes, total_episodes, poster, type, score, status }: watchlistAnime) => {
+const BasicAnimeCard = ({ id, name, original_name, poster }: watchlistAnime) => {
     return (
         <Link href={`/release/${id}`} asChild>
             <TouchableOpacity className="w-[30%]">

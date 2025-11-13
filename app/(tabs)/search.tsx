@@ -1,5 +1,5 @@
 import {ActivityIndicator, FlatList, Text, View} from "react-native";
-import React, {useEffect, useState, useRef } from "react";
+import React, {useEffect, useState } from "react";
 import {SafeAreaView} from "react-native-safe-area-context";
 import useFetch from "@/services/useFetch";
 import {searchAnime} from "@/services/api";

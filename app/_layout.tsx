@@ -16,7 +16,6 @@ export default function RootLayout() {
                 return;
             }
             try {
-                // Проверяем, жив ли токен
                 const res = await fetch("https://anime.v0k1nt.su/app/check", {
                     headers: { Authorization: `Bearer ${token}` },
                 });

@@ -23,7 +23,7 @@ const _Layout = () => {
                 options={{
                     title: "Главная",
                     headerShown: false,
-                    tabBarIcon: ({ focused, color }) => (
+                    tabBarIcon: ({ color }) => (
                         <>
                             <Image
                                 source={icons.home}
@@ -39,7 +39,7 @@ const _Layout = () => {
                 options={{
                     title: "Поиск",
                     headerShown: false,
-                    tabBarIcon: ({ focused, color }) => (
+                    tabBarIcon: ({ color }) => (
                         <>
                             <Image
                                 source={icons.search}
@@ -54,7 +54,7 @@ const _Layout = () => {
                 options={{
                     title: "Вотчлист",
                     headerShown: false,
-                    tabBarIcon: ({ focused, color }) => (
+                    tabBarIcon: ({ color }) => (
                         <>
                             <Image
                                 source={icons.watchlist}
