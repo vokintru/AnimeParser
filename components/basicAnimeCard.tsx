@@ -12,10 +12,10 @@ const BasicAnimeCard = ({ id, name, original_name, title_id, episodes, total_epi
                         ? { uri: `https://shikimori.one${poster}` }
                         : images.no_poster
                     }
-                    className="w-28 h-40 rounded-md aspect-[2/3]"
+                    className="rounded-md aspect-[2/3]"
                     resizeMode="cover"
                 />
-                <Text className="text-sm font-bold text-white mt-2" numberOfLines={1}>
+                <Text className="text-sm font-bold text-white mt-2" numberOfLines={3}>
                     {name || original_name}
                 </Text>
             </TouchableOpacity>

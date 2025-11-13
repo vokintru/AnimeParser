@@ -1,11 +1,11 @@
-import {ActivityIndicator, FlatList, Text, View} from "react-native";
-import React, { useState } from "react";
+import {ActivityIndicator, Animated, FlatList, Text, View} from "react-native";
+import React from "react";
 import useFetch from "@/services/useFetch";
 import {getWatchlist,} from "@/services/api";
 import BasicAnimeCard from "@/components/basicAnimeCard";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 const WatchList = () => {
-    const [searchQuery, setSearchQuery] = useState("");
 
     const {
         data: watchlistData,
@@ -13,33 +13,34 @@ const WatchList = () => {
         error: watchlistError,
     } = useFetch(() => getWatchlist())
     return (
-        <View className="flex-1 bg-background px-5">
+        <SafeAreaView className="flex-1 bg-background">
             {watchlistLoading ? (
-                <ActivityIndicator
-                    size="large"
-                    color="white"
-                    className="mt-10 self-center"
-                />
-            ) : watchlistError ? (
-                <Text className="text-white">{watchlistError.message}</Text>
-            ) : (
-                <FlatList
-                    data={watchlistData}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => <BasicAnimeCard {...item} />}
-                    numColumns={3}
-                    columnWrapperStyle={{
-                        justifyContent: 'flex-start',
-                        gap: 20,
-                        paddingRight: 5,
-                        marginBottom: 5,
-                    }}
-                    contentContainerStyle={{ paddingTop: 60, paddingBottom: 10 }}
-                    showsVerticalScrollIndicator={false}
-                />
-            )}
-        </View>
-    );
+                    <ActivityIndicator size="large" color="white" className="mt-10 self-center"/>)
+                : watchlistError ? (
+                        <Text className='text-white'>{watchlistError.message}</Text>)
+                    : (<>
+                        <FlatList
+                            data={watchlistData}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={
+                                ({item}) =>
+                                    <BasicAnimeCard {...item} />
+                            }
+                            numColumns={3}
+                            columnWrapperStyle={{
+                                justifyContent: 'flex-start',
+                                gap: 20,
+                                paddingRight: 5,
+                                marginBottom: 5,
+
+                            }}
+                            contentContainerStyle={{
+                                paddingHorizontal: 10,
+                                paddingVertical: 8,
+                            }}/>
+
+                    </>)}
+        </SafeAreaView>);
 }
 
 export default WatchList;
