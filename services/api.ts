@@ -22,12 +22,12 @@ export class ANPRS_CONFIG {
 }
 
 export const searchAnime = async ({ query }: {query: string}) => {
+    console.log(query);
     const endpoint = `${ANPRS_CONFIG.BASE_URL}/search/${encodeURIComponent(query)}`;
     const response = await fetch(endpoint, {
         method: "GET",
         headers: await ANPRS_CONFIG.getHeaders(),
     })
-
     if(!response.ok) {
         if (response.status === 403) {
             await SecureStore.deleteItemAsync("access_token");

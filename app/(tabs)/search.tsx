@@ -1,25 +1,43 @@
 import {ActivityIndicator, FlatList, Text, View} from "react-native";
-import React from "react";
+import React, {useEffect, useState, useRef } from "react";
 import {SafeAreaView} from "react-native-safe-area-context";
 import useFetch from "@/services/useFetch";
 import {searchAnime} from "@/services/api";
-import LogoAnimated from "@/components/LogoAnimated";
 import SearchBar from "@/components/SearchBar";
 import AnimeCard from "@/components/animeCard";
 
 const Search = () => {
+    const [searchQuery, setSearchQuery] = useState("");
 
     const {
         data: searchData,
         loading: searchLoading,
-        error: searchError
-    } = useFetch(() => searchAnime({query: "Магическая битва"}))
+        error: searchError,
+        refetch: searchRefetch,
+        reset: searchReset,
+    } = useFetch(() => searchAnime({query: searchQuery}), false)
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            const searchFunc = async () => {
+                if (searchQuery.trim()) {
+                    await searchRefetch();
+                } else {
+                    searchReset();
+                }
+            }
+            searchFunc();
+        }, 500);
+        return () => clearTimeout(handler);
+    }, [searchQuery]);
 
     return (
-        <SafeAreaView className="flex-1 bg-background items-center">
+        <SafeAreaView className="bg-background items-center flex-1">
             <View className="p-1">
                 <SearchBar
                     placeholder="Поиск"
+                    value={searchQuery}
+                    onChangeText={(text: string) => setSearchQuery(text)}
                 />
             </View>
             {searchLoading ? (
@@ -29,7 +47,7 @@ const Search = () => {
                     className="mt-10 self-center"
                 />
             ): searchError ? (
-                <Text>{searchError.message}</Text>
+                <Text className='text-white'>{searchError.message}</Text>
             ): (
                 <>
                     <FlatList
