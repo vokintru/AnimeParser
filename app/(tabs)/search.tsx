@@ -1,6 +1,5 @@
 import {ActivityIndicator, FlatList, Text, View} from "react-native";
 import React, {useEffect, useState } from "react";
-import {SafeAreaView} from "react-native-safe-area-context";
 import useFetch from "@/services/useFetch";
 import {searchAnime} from "@/services/api";
 import SearchBar from "@/components/SearchBar";
@@ -32,8 +31,8 @@ const Search = () => {
     }, [searchQuery]);
 
     return (
-        <SafeAreaView className="bg-background items-center flex-1">
-            <View className="p-1">
+        <View className="bg-background items-center flex-1" style={{ paddingTop: 60 }}>
+            <View className="p-1 pb-4">
                 <SearchBar
                     placeholder="Поиск"
                     value={searchQuery}
@@ -46,31 +45,29 @@ const Search = () => {
                     color="white"
                     className="mt-10 self-center"
                 />
-            ): searchError ? (
+            ) : searchError ? (
                 <Text className='text-white'>{searchError.message}</Text>
-            ): (
-                <>
-                    <FlatList
-                        data={searchData}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => <SearchAnimeCard {...item} />}
-                        contentContainerStyle={{
-                            paddingHorizontal: 10,
-                            paddingVertical: 8,
-                        }}
-                        ListEmptyComponent={
-                            !searchLoading && !searchError ? (
-                                <View className="mt-2 px-5">
-                                    <Text className='text-center text-gray-600'>
-                                        {searchQuery.trim() ? "Ничего не найдено" : "Поищите что-нибудь"}
-                                    </Text>
-                                </View>
-                            ) : null
-                        }
-                    />
-                </>
+            ) : (
+                <FlatList
+                    data={searchData}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => <SearchAnimeCard {...item} />}
+                    contentContainerStyle={{
+                        paddingHorizontal: 10,
+                        paddingVertical: 8,
+                    }}
+                    ListEmptyComponent={
+                        !searchLoading && !searchError ? (
+                            <View className="mt-2 px-5">
+                                <Text className='text-center text-gray-600'>
+                                    {searchQuery.trim() ? "Ничего не найдено" : "Поищите что-нибудь"}
+                                </Text>
+                            </View>
+                        ) : null
+                    }
+                />
             )}
-        </SafeAreaView>
+        </View>
     );
 }
 

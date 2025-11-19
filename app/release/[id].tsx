@@ -53,8 +53,8 @@ function getNextEpisodeTime(targetDate?: string | Date) {
 
 const Release = () => {
     const { id } = useLocalSearchParams();
-    const { data: anime, loading } = useFetch(() => getReleaseInfo(id as string));
-    const { data: poster} = useFetch(() => getReleaseInfoPoster(id as string));
+    const { data: anime } = useFetch(() => getReleaseInfo(id as string));
+    const { data: poster } = useFetch(() => getReleaseInfoPoster(id as string));
     const { data: rate } = useFetch(() => getRate(id as string));
 
     const mainPoster = poster || anime?.poster || images.no_poster;
