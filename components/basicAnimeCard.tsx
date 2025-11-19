@@ -3,9 +3,9 @@ import {Image, Text, TouchableOpacity} from "react-native";
 import {images} from "@/constants/images";
 import React from "react";
 
-const BasicAnimeCard = ({ id, name, original_name, poster }: watchlistAnime) => {
+const BasicAnimeCard = ({ title_id, name, original_name, poster }: watchlistAnime) => {
     return (
-        <Link href={`/release/${id}`} asChild>
+        <Link href={`/release/${title_id}`} asChild>
             <TouchableOpacity className="w-[30%]">
                 <Image
                     source={poster

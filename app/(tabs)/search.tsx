@@ -58,6 +58,15 @@ const Search = () => {
                             paddingHorizontal: 10,
                             paddingVertical: 8,
                         }}
+                        ListEmptyComponent={
+                            !searchLoading && !searchError ? (
+                                <View className="mt-2 px-5">
+                                    <Text className='text-center text-gray-600'>
+                                        {searchQuery.trim() ? "Ничего не найдено" : "Поищите что-нибудь"}
+                                    </Text>
+                                </View>
+                            ) : null
+                        }
                     />
                 </>
             )}

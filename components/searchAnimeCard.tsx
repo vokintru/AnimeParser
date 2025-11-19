@@ -13,7 +13,7 @@ const SearchAnimeCard = ({ id, russian, image, kind, status, aired_on, released_
                             ? { uri: `https://shikimori.one${image.original}` }
                             : images.no_poster
                     }
-                    className="w-28 h-40 rounded-md aspect-[2/3]"
+                    className="h-32 rounded-md aspect-[2/3]"
                     resizeMode="cover"
                 />
                 <View className="ml-3 justify-items-start flex-1">

@@ -31,3 +31,20 @@ interface watchlistAnime {
     score: string;
     status: string;
 }
+
+interface rateAnime {
+    id: number;
+    user_id: number;
+    target_id: number;
+    target_type: string;
+    score: number;
+    status: string;
+    rewatches: number;
+    episodes: number;
+    volumes: number;
+    chapters: number;
+    text: string | null;
+    text_html: string;
+    created_at: string;
+    updated_at: string;
+}

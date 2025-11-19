@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import AuthScreen from "./auth";
 import "./globals.css";
+import {StatusBar} from "react-native";
 
 export default function RootLayout() {
     const [authChecked, setAuthChecked] = useState(false);
@@ -42,10 +43,13 @@ export default function RootLayout() {
     }
 
     return (
-        <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="release/[id]" options={{ headerShown: false }} />
-            <Stack.Screen name="auth" options={{ headerShown: false }} />
-        </Stack>
+        <>
+            <StatusBar hidden={true} />
+            <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="release/[id]" options={{ headerShown: false }} />
+                <Stack.Screen name="auth" options={{ headerShown: false }} />
+            </Stack>
+        </>
     );
 }

@@ -28,7 +28,7 @@ export const searchAnime = async ({ query }: {query: string}) => {
         headers: await ANPRS_CONFIG.getHeaders(),
     })
     if(!response.ok) {
-        if (response.status === 403) {
+        if (response.status === 401) {
             await SecureStore.deleteItemAsync("access_token");
             router.replace("/auth");
             return;
@@ -37,6 +37,7 @@ export const searchAnime = async ({ query }: {query: string}) => {
     }
     return await response.json();
 }
+
 export const getWatchlist = async () => {
     const endpoint = `${ANPRS_CONFIG.BASE_URL}/user/watch_list`;
     const response = await fetch(endpoint, {
@@ -44,7 +45,7 @@ export const getWatchlist = async () => {
         headers: await ANPRS_CONFIG.getHeaders(),
     })
     if(!response.ok) {
-        if (response.status === 403) {
+        if (response.status === 401) {
             await SecureStore.deleteItemAsync("access_token");
             router.replace("/auth");
             return;
@@ -52,4 +53,70 @@ export const getWatchlist = async () => {
         throw new Error(`Ошибка запроса ${endpoint}\n${response.statusText}`);
     }
     return await response.json();
+}
+
+export const getReleaseInfo = async (releaseId: string) => {
+    try {
+        const endpoint = `${ANPRS_CONFIG.BASE_URL}/title/${releaseId}/info`;
+        const response = await fetch(endpoint, {
+            method: "GET",
+            headers: await ANPRS_CONFIG.getHeaders(),
+        })
+        if(!response.ok) {
+            if (response.status === 401) {
+                await SecureStore.deleteItemAsync("access_token");
+                router.replace("/auth");
+                return;
+            }
+            throw new Error(`Ошибка запроса ${endpoint}\n${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Ошибка запроса: ", error);
+        throw error;
+    }
+}
+
+export const getReleaseInfoPoster = async (releaseId: string) => {
+    try {
+        const endpoint = `${ANPRS_CONFIG.BASE_URL}/title/${releaseId}/info/poster`;
+        const response = await fetch(endpoint, {
+            method: "GET",
+            headers: await ANPRS_CONFIG.getHeaders(),
+        })
+        if(!response.ok) {
+            if (response.status === 401) {
+                await SecureStore.deleteItemAsync("access_token");
+                router.replace("/auth");
+                return;
+            }
+            throw new Error(`Ошибка запроса ${endpoint}\n${response.statusText}`);
+        }
+        return await response.text();
+    } catch (error) {
+        console.error("Ошибка запроса: ", error);
+        throw error;
+    }
+}
+
+export const getRate = async (releaseId: string) => {
+    try {
+        const endpoint = `${ANPRS_CONFIG.BASE_URL}/user/get_rate/${releaseId}`;
+        const response = await fetch(endpoint, {
+            method: "GET",
+            headers: await ANPRS_CONFIG.getHeaders(),
+        })
+        if(!response.ok) {
+            if (response.status === 401) {
+                await SecureStore.deleteItemAsync("access_token");
+                router.replace("/auth");
+                return;
+            }
+            throw new Error(`Ошибка запроса ${endpoint}\n${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Ошибка запроса: ", error);
+        throw error;
+    }
 }
