@@ -2,10 +2,13 @@ import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import {useLocalSearchParams} from "expo-router";
 import useFetch from "@/services/useFetch";
-import {getRate, getReleaseInfo, getReleaseInfoPoster} from "@/services/api";
+import {getRate, getReleaseInfo, getReleaseInfoPoster, getTranslations} from "@/services/api";
 import { LinearGradient } from 'expo-linear-gradient'
 import {images} from "@/constants/images";
 import {icons} from "@/constants/icons";
+import { Modal } from "react-native";
+import { Link } from "expo-router";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 function formatDateRange(
     started: string | null | undefined,
@@ -57,6 +60,9 @@ const Release = () => {
     const { data: poster } = useFetch(() => getReleaseInfoPoster(id as string));
     const { data: rate } = useFetch(() => getRate(id as string));
 
+    const [modalVisible, setModalVisible] = React.useState(false);
+    const { data: translations } = useFetch(() => getTranslations(id as string));
+
     const mainPoster = poster || anime?.poster || images.no_poster;
 
     const totalEpisodes = anime?.total_episodes == 0 ? "?" : anime?.total_episodes;
@@ -66,6 +72,11 @@ const Release = () => {
     const nextEpisodeText = anime?.is_ongoing
         ? getNextEpisodeTime(anime.next_episode_at)
         : null;
+
+    const targetEpisode =
+        rate?.episodes === 0 && rate?.status !== "completed"
+            ? 1
+            : rate?.episodes + 1;
 
     if (!anime) return null;
 
@@ -100,33 +111,31 @@ const Release = () => {
 
                 <TouchableOpacity
                     className="bg-[#27272a] rounded-lg py-3.5 flex flex-row items-center justify-center mt-5 mx-5"
-                    onPress={() => {
-                        const targetEpisode =
-                            rate?.episodes === 0 && rate?.status !== "completed"
-                                ? rate?.episodes + 1
-                                : 0;
-                        console.log("Переходим на серию:", targetEpisode);
-                    }}
+                    onPress={() => setModalVisible(true)}
                 >
                     <Image
                         source={icons.play}
-                        className="mr-1 mt-0.5"
+                        className="mr-1"
                         style={{
-                            width: 24,
-                            height: 24,
+                            width: 18,
+                            height: 18,
                             resizeMode: "contain",
                             tintColor: "#fff",
                         }}
                     />
                     <Text className="text-white font-semibold text-base">
-                        {rate?.episodes === 0 && rate?.status !== "completed" ? "Смотреть" : "Продолжить"}
+                        {(!rate || (rate.episodes === 0 && rate.status !== "completed"))
+                            ? "Смотреть"
+                            : "Продолжить"}
                     </Text>
 
                     <View className="absolute bottom-0 left-0 w-full h-[2px] bg-gray-700 rounded-b-lg">
                         <View
                             className="h-[2px] bg-white"
                             style={{
-                                width: `${(rate?.episodes / totalEpisodes) * 100}%`,
+                                width: rate && totalEpisodes
+                                    ? `${(rate.episodes / totalEpisodes) * 100}%`
+                                    : "0%",
                             }}
                         />
                     </View>
@@ -186,6 +195,70 @@ const Release = () => {
                         </>
                     )}
                 </View>
+
+                <Modal
+                    visible={modalVisible}
+                    transparent
+                    animationType="none"
+                    onRequestClose={() => setModalVisible(false)}
+                >
+                    <View
+                        className="flex-1 bg-black/60 justify-center items-center px-6"
+                        style={{ paddingTop: 20, paddingBottom: 20 }}
+                    >
+                        <View
+                            className="bg-[#1c1c1e] w-full rounded-2xl p-5"
+                            style={{ maxHeight: "80%" }}
+                        >
+                            <TouchableOpacity
+                                onPress={() => setModalVisible(false)}
+                                style={{
+                                    position: "absolute",
+                                    top: 10,
+                                    right: 10,
+                                    padding: 5,
+                                    zIndex: 10
+                                }}
+                            >
+                                <Ionicons name="close" size={22} color="#888" />
+                            </TouchableOpacity>
+
+                            <Text className="text-white text-lg font-semibold mb-4">
+                                Выберите перевод
+                            </Text>
+
+                            <ScrollView
+                                showsVerticalScrollIndicator={true}
+                                contentContainerStyle={{ paddingBottom: 10 }}
+                            >
+                                {(!translations || !translations.translations || translations.translations.length === 0) ? (
+                                    <Text className="text-gray-400 text-center py-4">
+                                        Переводы не найдены
+                                    </Text>
+                                ) : (
+                                    translations.translations.map((tr: any) => {
+                                        const data = `${id}/${tr.id}/${targetEpisode}`;
+
+                                        return (
+                                            <Link
+                                                key={tr.id}
+                                                href={`/watch/${data}`}
+                                                asChild
+                                            >
+                                                <TouchableOpacity
+                                                    className="bg-[#2a2a2d] rounded-xl p-3 mb-3"
+                                                    onPress={() => setModalVisible(false)}
+                                                >
+                                                    <Text className="text-white text-base">{tr.name}</Text>
+                                                </TouchableOpacity>
+                                            </Link>
+                                        );
+                                    })
+                                )}
+                            </ScrollView>
+                        </View>
+                    </View>
+                </Modal>
             </ScrollView>
         </View>
     );

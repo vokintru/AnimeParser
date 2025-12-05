@@ -114,7 +114,83 @@ export const getRate = async (releaseId: string) => {
             }
             throw new Error(`Ошибка запроса ${endpoint}\n${response.statusText}`);
         }
+        if (response.status === 204) {
+            return null;
+        }
         return await response.json();
+    } catch (error) {
+        console.error("Ошибка запроса: ", error);
+        throw error;
+    }
+}
+
+export const getTranslations = async (releaseId: string) => {
+    try {
+        const endpoint = `${ANPRS_CONFIG.BASE_URL}/title/${releaseId}/translations`;
+        const response = await fetch(endpoint, {
+            method: "GET",
+            headers: await ANPRS_CONFIG.getHeaders(),
+        })
+        if(!response.ok) {
+            if (response.status === 401) {
+                await SecureStore.deleteItemAsync("access_token");
+                router.replace("/auth");
+                return;
+            }
+            throw new Error(`Ошибка запроса ${endpoint}\n${response.statusText}`);
+        }
+        if (response.status === 204) {
+            return null;
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Ошибка запроса: ", error);
+        throw error;
+    }
+}
+
+export const getPlayerData = async (releaseId: string, translationId: string, episode: string) => {
+    try {
+        const endpoint = `${ANPRS_CONFIG.BASE_URL}/title/${releaseId}/watch?transl=${translationId}&ep=${episode}`;
+        const response = await fetch(endpoint, {
+            method: "GET",
+            headers: await ANPRS_CONFIG.getHeaders(),
+        })
+        if(!response.ok) {
+            if (response.status === 401) {
+                await SecureStore.deleteItemAsync("access_token");
+                router.replace("/auth");
+                return;
+            }
+            throw new Error(`Ошибка запроса ${endpoint}\n${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Ошибка запроса: ", error);
+        throw error;
+    }
+}
+
+export const markWatched = async (releaseId: string, episode: number) => {
+    try {
+        const endpoint = `${ANPRS_CONFIG.BASE_URL}/user/mark_watched`;
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: await ANPRS_CONFIG.getHeaders(),
+            body: JSON.stringify({
+                release_id: releaseId,
+                episode: episode,
+            }),
+        })
+        if(!response.ok) {
+            if (response.status === 401) {
+                await SecureStore.deleteItemAsync("access_token");
+                router.replace("/auth");
+                return;
+            }
+            throw new Error(`Ошибка запроса ${endpoint}\n${response.statusText}`);
+        }
+        return response.status;
     } catch (error) {
         console.error("Ошибка запроса: ", error);
         throw error;

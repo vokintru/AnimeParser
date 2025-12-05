@@ -48,6 +48,7 @@ export default function RootLayout() {
             <Stack>
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen name="release/[id]" options={{ headerShown: false }} />
+                <Stack.Screen name="watch/[...data]" options={{ headerShown: false }} />
                 <Stack.Screen name="auth" options={{ headerShown: false }} />
             </Stack>
         </>

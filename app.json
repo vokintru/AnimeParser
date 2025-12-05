@@ -2,7 +2,7 @@
   "expo": {
     "name": "AnimeParser",
     "slug": "animeparser",
-    "version": "1.0.0",
+    "version": "0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "animeparser",
@@ -37,7 +37,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true,
