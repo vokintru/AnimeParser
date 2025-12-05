@@ -1,21 +1,22 @@
-import { View, StyleSheet, Dimensions } from "react-native";
-import React, { useEffect, useState, useRef } from "react";
+import { View } from "react-native";
+import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import * as ScreenOrientation from "expo-screen-orientation";
-import Video from "react-native-video";
+import Video from 'react-native-video';
 import { markWatched, getPlayerData, getTranslations } from "@/services/api";
 
 const Watch = () => {
     const router = useRouter();
-    const videoRef = useRef<Video>(null);
 
-    // Ориентация экрана
+    // --- Ориентация экрана ---
     useEffect(() => {
         let previousOrientation: ScreenOrientation.OrientationLock | null = null;
+
         const setLandscapeButUnlocked = async () => {
             previousOrientation = await ScreenOrientation.getOrientationLockAsync();
             await ScreenOrientation.unlockAsync();
         };
+
         setLandscapeButUnlocked();
 
         return () => {
@@ -28,18 +29,20 @@ const Watch = () => {
         };
     }, []);
 
-    // Данные из параметров
+    // --- Данные из параметров ---
     const { data } = useLocalSearchParams();
     const [title_id, translation_id, episodeParam] = data as string[];
 
-    // Плеер
+    // --- Состояния ---
     const [currentEpisode, setCurrentEpisode] = useState(Number(episodeParam));
     const [playerUri, setPlayerUri] = useState<string | null>(null);
     const [playerSources, setPlayerSources] = useState<Record<string, Record<string, string>>>({});
 
+    // --- Функция получения ссылок и сортировки ---
     const fetchAndSortLinks = async (episodeNumber: number) => {
         try {
             const resp = await getPlayerData(title_id, translation_id, episodeNumber.toString());
+
             const data: Record<string, Record<string, string>> = {};
 
             for (const source in resp) {
@@ -94,35 +97,22 @@ const Watch = () => {
         await fetchAndSortLinks(prevEp);
     };
 
+    // --- Инициализация при первом рендере ---
     useEffect(() => {
         fetchAndSortLinks(currentEpisode);
     }, []);
 
     return (
-        <View style={styles.container}>
+        <View className="bg-background flex-1">
             {playerUri && (
                 <Video
-                    ref={videoRef}
                     source={{ uri: playerUri }}
-                    style={styles.video}
+                    style={{ height: "100%" }}
                     controls
-                    resizeMode="contain"
-                    onEnd={nextEpisode}
                 />
             )}
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#121212",
-    },
-    video: {
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height,
-    },
-});
 
 export default Watch;
